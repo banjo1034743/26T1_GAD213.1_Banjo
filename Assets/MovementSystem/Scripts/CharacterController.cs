@@ -24,6 +24,7 @@ namespace GAD213.P1.MovementSystem
 
         #region Methods
 
+        // Called every frame in Update()
         private void CallIdle()
         {
             if (_inputManager.GetMoveValue().x <= 0 && _inputManager.GetMoveValue().y == 0)
@@ -32,16 +33,26 @@ namespace GAD213.P1.MovementSystem
             }
         }
 
+        // Called in FixedUpdate(), as uses RB.MovePosition()
         private void CallWalk()
         {
+            //Debug.Log(_inputManager.GetMoveValue());
 
+            // If the player is moving the analog stick to the left or right without angling it upward, move
+
+            if (_inputManager.GetMoveValue().x > 0 || _inputManager.GetMoveValue().x < 0 && _inputManager.GetMoveValue().y < 0.5f)
+            {
+                _walkingController.Walk(_inputManager.GetMoveValue());
+            }
         }
 
+        // Called every frame in Update()
         private void CallJump()
         {
 
         }
 
+        // Called every frame in Update()
         private void CallCrouch()
         {
 
@@ -51,16 +62,15 @@ namespace GAD213.P1.MovementSystem
 
         #region Unity Methods
 
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Start()
-        {
-
-        }
-
         // Update is called once per frame
         void Update()
         {
             CallIdle();
+        }
+
+        private void FixedUpdate()
+        {
+            CallWalk();
         }
 
         #endregion

@@ -23,6 +23,8 @@ namespace GAD213.P1.MovementSystem
 
         public Vector2 GetMoveValue()
         {
+            //Debug.Log(_inputActionMove.ReadValue<Vector2>());
+
             return _inputActionMove.ReadValue<Vector2>();
         }
 
@@ -41,6 +43,16 @@ namespace GAD213.P1.MovementSystem
         void Start()
         {
             InitializeInputActions();
+        }
+
+        private void OnEnable()
+        {
+            _inputActionAsset.Enable();
+        }
+
+        private void OnDisable()
+        {
+            _inputActionAsset.Disable();
         }
 
         #endregion
