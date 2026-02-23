@@ -16,6 +16,11 @@ namespace GAD213.P1.MovementSystem
 
         [SerializeField] private CrouchController _crouchController;
 
+        [Header("Parameters")]
+
+        [Tooltip("We don't want the player to move back and forth if the analog stick is angled more than going in the right or left direction. At the same time, we dont want to make it diffuclt to mvoe forward by making the input too closed off. This should be set to a sweet spot.")]
+        [SerializeField] private float _analogStickYValueAllowance;
+
         [Header("Scripts")]
 
         [SerializeField] private InputManager _inputManager;
@@ -40,7 +45,7 @@ namespace GAD213.P1.MovementSystem
 
             // If the player is moving the analog stick to the left or right without angling it upward, move
 
-            if (_inputManager.GetMoveValue().x > 0 || _inputManager.GetMoveValue().x < 0 && _inputManager.GetMoveValue().y < 0.5f)
+            if (_inputManager.GetMoveValue().x > 0 && _inputManager.GetMoveValue().y < _analogStickYValueAllowance || _inputManager.GetMoveValue().x < 0 && _inputManager.GetMoveValue().y < _analogStickYValueAllowance)
             {
                 _walkingController.Walk(_inputManager.GetMoveValue());
             }

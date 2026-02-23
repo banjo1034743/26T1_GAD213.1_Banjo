@@ -156,7 +156,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3406932050699042284}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2.85, y: -0.778, z: -0.07385078}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -180,6 +180,7 @@ MonoBehaviour:
   _walkingController: {fileID: 2232005032355707139}
   _jumpingController: {fileID: 4655167445258384860}
   _crouchController: {fileID: 5429816823902312427}
+  _analogStickYValueAllowance: 0.3
   _inputManager: {fileID: 1980220120415226195}
 --- !u!114 &1468388287676670828
 MonoBehaviour:
@@ -206,6 +207,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d14b601c5bb649540b2181c28e9f74b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _walkingSpeed: 2
+  _rigidBody: {fileID: 8903094430436609989}
+  _animationStateController: {fileID: 2640644909906439497}
 --- !u!114 &4655167445258384860
 MonoBehaviour:
   m_ObjectHideFlags: 0

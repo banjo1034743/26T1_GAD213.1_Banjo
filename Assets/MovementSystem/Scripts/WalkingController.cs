@@ -16,6 +16,10 @@ namespace GAD213.P1.MovementSystem
         [Tooltip("Used for moving the character")]
         [SerializeField] private Rigidbody2D _rigidBody;
 
+        [Header("Scripts")]
+
+        [SerializeField] private AnimationStateController _animationStateController;
+
         #endregion
 
         #region Methods
@@ -23,7 +27,11 @@ namespace GAD213.P1.MovementSystem
         public void Walk(Vector3 positionToMoveTo)
         {
             //Debug.Log(positionToMoveTo);
-            _rigidBody.MovePosition(transform.position += positionToMoveTo * Time.fixedDeltaTime * _walkingSpeed);
+
+            Vector3 movement = new Vector3(positionToMoveTo.x, 0, 0);
+
+            _rigidBody.MovePosition(transform.position += movement * Time.fixedDeltaTime * _walkingSpeed);
+            _animationStateController.ToggleWalkingState(movement.x);
         }
 
         // Called in Start()

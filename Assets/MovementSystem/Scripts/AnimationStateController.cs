@@ -11,9 +11,13 @@ namespace GAD213.P1.MovementSystem
 
         const int idleState = 0;
 
+        const int walkingState = 1;
+
         [Header("Components")]
 
         [SerializeField] private Animator _playerAnimator;
+
+        [SerializeField] private AnimationState _walkState;
 
         #endregion
 
@@ -21,7 +25,25 @@ namespace GAD213.P1.MovementSystem
 
         public void ToggleIdleState()
         {
+            // Resets the animator playback speed to default to ensure animations don't play in reverse.
+            _playerAnimator.SetFloat("playbackSpeed", 1);
+
             _playerAnimator.SetInteger("currentAnimationState", idleState);
+        }
+
+        public void ToggleWalkingState(float directionWalking)
+        {
+            switch (directionWalking)
+            {
+                case > 0:
+                    _playerAnimator.SetFloat("playbackSpeed", 1);
+                    _playerAnimator.SetInteger("currentAnimationState", walkingState);
+                    break;
+                case < 0:
+                    _playerAnimator.SetFloat("playbackSpeed", -1);
+                    _playerAnimator.SetInteger("currentAnimationState", walkingState);
+                    break;
+            }
         }
 
         #endregion
