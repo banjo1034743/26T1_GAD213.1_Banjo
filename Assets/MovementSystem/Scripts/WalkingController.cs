@@ -2,7 +2,6 @@ using UnityEngine;
 
 namespace GAD213.P1.MovementSystem
 {
-    [RequireComponent (typeof (Rigidbody2D))]
     public class WalkingController : MonoBehaviour
     {
         #region Variables

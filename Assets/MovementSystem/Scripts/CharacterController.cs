@@ -21,6 +21,9 @@ namespace GAD213.P1.MovementSystem
         [Tooltip("We don't want the player to move back and forth if the analog stick is angled more than going in the right or left direction. At the same time, we dont want to make it diffuclt to mvoe forward by making the input too closed off. This should be set to a sweet spot.")]
         [SerializeField] private float _analogStickYValueAllowance;
 
+        [Tooltip("We don't want the player to move back and forth if the analog stick is angled left or right more than going down. At the same time, we dont want to make it diffuclt to crouch by making the input too closed off. This should be set to a sweet spot.")]
+        [SerializeField] private float _analogStickXValueAllowance;
+
         [Header("Scripts")]
 
         [SerializeField] private InputManager _inputManager;
@@ -60,7 +63,14 @@ namespace GAD213.P1.MovementSystem
         // Called every frame in Update()
         private void CallCrouch()
         {
-
+            if (_inputManager.GetMoveValue().y < 0 && _inputManager.GetMoveValue().x < _analogStickXValueAllowance || _inputManager.GetMoveValue().y < 0 && _inputManager.GetMoveValue().x > -_analogStickXValueAllowance)
+            {
+                _crouchController.Crouch();
+            }
+            else
+            {
+                _crouchController.Uncrouch();
+            }
         }
 
         #endregion
@@ -71,6 +81,7 @@ namespace GAD213.P1.MovementSystem
         void Update()
         {
             CallIdle();
+            //CallCrouch();
         }
 
         private void FixedUpdate()

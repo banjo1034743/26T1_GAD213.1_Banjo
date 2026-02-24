@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: b7296d109db25124eb07c863b36e8eb8
+guid: 9c3b0207fbcddee4295e74f75dd12561
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -247037112251525876
-    second: 08_0
+      213: -2159122177132540398
+    second: 02_Crouching 1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: 08_0
+      name: 02_Crouching 1_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 64
-        height: 129
+        width: 62
+        height: 90
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c05d8e52e09529cf0800000000000000
-      internalID: -247037112251525876
+      spriteID: 21ec855c1d14902e0800000000000000
+      internalID: -2159122177132540398
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      08_0: -247037112251525876
+      02_Crouching 1_0: -2159122177132540398
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
