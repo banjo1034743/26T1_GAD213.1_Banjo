@@ -44,13 +44,16 @@ namespace GAD213.P1.MovementSystem
         // Called in FixedUpdate(), as uses RB.MovePosition()
         private void CallWalk()
         {
-            //Debug.Log(_inputManager.GetMoveValue());
-
-            // If the player is moving the analog stick to the left or right without angling it upward, move
-
-            if (_inputManager.GetMoveValue().x > 0 && _inputManager.GetMoveValue().y < _analogStickYValueAllowance || _inputManager.GetMoveValue().x < 0 && _inputManager.GetMoveValue().y < _analogStickYValueAllowance)
+            if (_crouchController.IsCrouching == false)
             {
-                _walkingController.Walk(_inputManager.GetMoveValue());
+                //Debug.Log(_inputManager.GetMoveValue());
+
+                // If the player is moving the analog stick to the left or right without angling it upward, move
+
+                if (_inputManager.GetMoveValue().x > 0 && _inputManager.GetMoveValue().y < _analogStickYValueAllowance || _inputManager.GetMoveValue().x < 0 && _inputManager.GetMoveValue().y < _analogStickYValueAllowance)
+                {
+                    _walkingController.Walk(_inputManager.GetMoveValue());
+                }
             }
         }
 
@@ -63,10 +66,12 @@ namespace GAD213.P1.MovementSystem
         // Called every frame in Update()
         private void CallCrouch()
         {
-            if (_inputManager.GetMoveValue().y < 0 && _inputManager.GetMoveValue().x < _analogStickXValueAllowance || _inputManager.GetMoveValue().y < 0 && _inputManager.GetMoveValue().x > -_analogStickXValueAllowance)
+            // If the left analog stick is flicked down, and not angled in any direction too far, crouch.
+            if (_inputManager.GetMoveValue().y < -0.9f && _inputManager.GetMoveValue().x < _analogStickXValueAllowance || _inputManager.GetMoveValue().y < -0.9f && _inputManager.GetMoveValue().x > -_analogStickXValueAllowance)
             {
                 _crouchController.Crouch();
             }
+            // Otherwise, remain the same.
             else
             {
                 _crouchController.Uncrouch();
@@ -81,7 +86,7 @@ namespace GAD213.P1.MovementSystem
         void Update()
         {
             CallIdle();
-            //CallCrouch();
+            CallCrouch();
         }
 
         private void FixedUpdate()

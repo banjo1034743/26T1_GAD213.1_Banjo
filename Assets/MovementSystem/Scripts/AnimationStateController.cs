@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEditor.Animations;
 
 namespace GAD213.P1.MovementSystem
 {
@@ -13,11 +12,15 @@ namespace GAD213.P1.MovementSystem
 
         const int walkingState = 1;
 
+        const int crouchingState = 2;
+
         [Header("Components")]
 
         [SerializeField] private Animator _playerAnimator;
 
         [SerializeField] private AnimationState _walkState;
+
+        [SerializeField] private AnimationState _crouchState;
 
         #endregion
 
@@ -44,6 +47,13 @@ namespace GAD213.P1.MovementSystem
                     _playerAnimator.SetInteger("currentAnimationState", walkingState);
                     break;
             }
+        }
+
+        public void ToggleCrouchState()
+        {
+            _playerAnimator.SetFloat("playbackSpeed", 1);
+
+            _playerAnimator.SetInteger("currentAnimationState", crouchingState);
         }
 
         #endregion

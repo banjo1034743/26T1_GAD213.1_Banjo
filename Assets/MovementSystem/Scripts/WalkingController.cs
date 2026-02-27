@@ -10,6 +10,10 @@ namespace GAD213.P1.MovementSystem
 
         [SerializeField] private float _walkingSpeed;
 
+        [Header("Game Objects")]
+
+        [SerializeField] private GameObject _playerColliderObject;
+
         [Header("Components")]
 
         [Tooltip("Used for moving the character")]
@@ -19,24 +23,29 @@ namespace GAD213.P1.MovementSystem
 
         [SerializeField] private AnimationStateController _animationStateController;
 
+        [SerializeField] private GroundChecker _groundChecker;
+
         #endregion
 
         #region Methods
 
         public void Walk(Vector3 positionToMoveTo)
         {
-            //Debug.Log(positionToMoveTo);
+            if (_groundChecker.IsOnGround())
+            {
+                //Debug.Log(positionToMoveTo);
 
-            Vector3 movement = new Vector3(positionToMoveTo.x, 0, 0);
+                Vector3 movement = new Vector3(positionToMoveTo.x, 0, 0);
 
-            _rigidBody.MovePosition(transform.position += movement * Time.fixedDeltaTime * _walkingSpeed);
-            _animationStateController.ToggleWalkingState(movement.x);
+                _rigidBody.MovePosition(transform.position += movement * Time.fixedDeltaTime * _walkingSpeed);
+                _animationStateController.ToggleWalkingState(movement.x);
+            }
         }
 
         // Called in Start()
         private void InitializeVariables()
         {
-            _rigidBody = GetComponent<Rigidbody2D>();
+            _rigidBody = _playerColliderObject.GetComponent<Rigidbody2D>();
         }
 
         #endregion
