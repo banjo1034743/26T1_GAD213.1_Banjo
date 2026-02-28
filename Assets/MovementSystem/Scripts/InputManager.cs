@@ -23,7 +23,7 @@ namespace GAD213.P1.MovementSystem
 
         public Vector2 GetMoveValue()
         {
-            Debug.Log(_inputActionMove.ReadValue<Vector2>());
+            //Debug.Log(_inputActionMove.ReadValue<Vector2>());
 
             return _inputActionMove.ReadValue<Vector2>();
         }

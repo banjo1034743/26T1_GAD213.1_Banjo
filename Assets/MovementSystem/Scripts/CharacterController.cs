@@ -24,6 +24,14 @@ namespace GAD213.P1.MovementSystem
         [Tooltip("We don't want the player to move back and forth if the analog stick is angled left or right more than going down. At the same time, we dont want to make it diffuclt to crouch by making the input too closed off. This should be set to a sweet spot.")]
         [SerializeField] private float _analogStickXValueAllowance;
 
+        [Header("Collider Variables")]
+
+        [SerializeField] private Vector2 _originalColliderScale;
+
+        [SerializeField] private Vector2 _originalColliderPosition;
+
+        [SerializeField] private GameObject _collider;
+
         [Header("Scripts")]
 
         [SerializeField] private InputManager _inputManager;
@@ -44,7 +52,7 @@ namespace GAD213.P1.MovementSystem
         // Called in FixedUpdate(), as uses RB.MovePosition()
         private void CallWalk()
         {
-            if (_crouchController.IsCrouching == false)
+            if (_crouchController.IsCrouching == false && _jumpingController.IsJumping == false)
             {
                 //Debug.Log(_inputManager.GetMoveValue());
 
@@ -60,22 +68,47 @@ namespace GAD213.P1.MovementSystem
         // Called every frame in Update()
         private void CallJump()
         {
-
+            // If the left analog stick is flicked up and not angled in the left or right too much, call jump
+            if (_inputManager.GetMoveValue().y > 0.9f && _inputManager.GetMoveValue().x < _analogStickXValueAllowance || _inputManager.GetMoveValue().y > 0.9f && _inputManager.GetMoveValue().x > -_analogStickXValueAllowance)
+            {
+                if (_jumpingController.IsJumping == false)
+                {
+                    _jumpingController.IsJumping = true;
+                    _jumpingController.Jump();
+                }
+            }
         }
 
         // Called every frame in Update()
         private void CallCrouch()
         {
-            // If the left analog stick is flicked down, and not angled in any direction too far, crouch.
-            if (_inputManager.GetMoveValue().y < -0.9f && _inputManager.GetMoveValue().x < _analogStickXValueAllowance || _inputManager.GetMoveValue().y < -0.9f && _inputManager.GetMoveValue().x > -_analogStickXValueAllowance)
+            if (_jumpingController.IsJumping == false)
             {
-                _crouchController.Crouch();
+                // If the left analog stick is flicked down, and not angled in any direction too far, crouch.
+                if (_inputManager.GetMoveValue().y < -0.9f && _inputManager.GetMoveValue().x < _analogStickXValueAllowance || _inputManager.GetMoveValue().y < -0.9f && _inputManager.GetMoveValue().x > -_analogStickXValueAllowance)
+                {
+                    _crouchController.Crouch();
+                }
+                // Otherwise, remain the same.
+                else
+                {
+                    _crouchController.Uncrouch();
+                }
             }
-            // Otherwise, remain the same.
-            else
-            {
-                _crouchController.Uncrouch();
-            }
+        }
+
+        public void InitializeCollider()
+        {
+            _originalColliderScale = _collider.transform.localScale;
+
+            _originalColliderPosition = _collider.transform.localPosition;
+        }
+
+        public void ResetCollider()
+        {
+            _collider.transform.localScale = _originalColliderScale;
+
+            _collider.transform.localPosition = _originalColliderPosition;
         }
 
         #endregion
@@ -92,6 +125,12 @@ namespace GAD213.P1.MovementSystem
         private void FixedUpdate()
         {
             CallWalk();
+            CallJump();
+        }
+
+        private void Start()
+        {
+            InitializeCollider();
         }
 
         #endregion

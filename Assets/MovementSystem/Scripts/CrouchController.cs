@@ -25,11 +25,7 @@ namespace GAD213.P1.MovementSystem
 
         [SerializeField] private bool _isCrouching = false; // Not starting game crouched
 
-        private Vector2 _originalColliderScale;
-
         [SerializeField] private float _amountToMoveColliderDown; // 0.4
-
-        private Vector2 _originalColliderPosition;
 
         [Header("Components")]
 
@@ -41,6 +37,8 @@ namespace GAD213.P1.MovementSystem
 
         [SerializeField] private AnimationStateController _animationStateController;
 
+        [SerializeField] private CharacterController _characterController;
+
         #endregion
 
         #region Methods
@@ -49,7 +47,7 @@ namespace GAD213.P1.MovementSystem
         {
             if (_groundChecker.IsOnGround() && !_isCrouching)
             {
-                Debug.Log("We are crouching");
+                //Debug.Log("We are crouching");
 
                 // Scale the collider down to the needed size to mostly cover crouching sprite
 
@@ -69,11 +67,9 @@ namespace GAD213.P1.MovementSystem
         {
             if (_groundChecker.IsOnGround() && _isCrouching)
             {
-                Debug.Log("We are not crouching");
+                //Debug.Log("We are not crouching");
 
-                _collider.transform.localScale = _originalColliderScale;
-
-                _collider.transform.localPosition = _originalColliderPosition;
+                _characterController.ResetCollider();
 
                 _animationStateController.ToggleIdleState();
 
@@ -81,22 +77,14 @@ namespace GAD213.P1.MovementSystem
             }
         }
 
-        // Called in Start()
-        private void InitializeVariables()
-        {
-            _originalColliderScale = _collider.transform.localScale;
-
-            _originalColliderPosition = _collider.transform.localPosition;
-        }
-
         #endregion
 
         #region Unity Methods
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Start()
+        private void Start()
         {
-            InitializeVariables();
+            _characterController.InitializeCollider();
         }
 
         #endregion

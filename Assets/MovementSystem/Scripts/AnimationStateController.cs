@@ -18,9 +18,9 @@ namespace GAD213.P1.MovementSystem
 
         [SerializeField] private Animator _playerAnimator;
 
-        [SerializeField] private AnimationState _walkState;
+        [SerializeField] private AnimationState _walkAnimationState;
 
-        [SerializeField] private AnimationState _crouchState;
+        [SerializeField] private AnimationState _crouchAnimationState;
 
         #endregion
 

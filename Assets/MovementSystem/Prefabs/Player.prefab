@@ -139,6 +139,7 @@ GameObject:
   - component: {fileID: 4655167445258384860}
   - component: {fileID: 5429816823902312427}
   - component: {fileID: 1980220120415226195}
+  - component: {fileID: 1069403978364201557}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -181,6 +182,9 @@ MonoBehaviour:
   _crouchController: {fileID: 5429816823902312427}
   _analogStickYValueAllowance: 0.3
   _analogStickXValueAllowance: 0.3
+  _originalColliderScale: {x: 0, y: 0}
+  _originalColliderPosition: {x: 0, y: 0}
+  _collider: {fileID: 4551694876620202595}
   _inputManager: {fileID: 1980220120415226195}
 --- !u!114 &1468388287676670828
 MonoBehaviour:
@@ -224,6 +228,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92599ff173c6cc44f86588b2a0f78a92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerStandingYPosition: -0.956
+  _isJumping: 0
+  _rigidBody: {fileID: 1069403978364201557}
 --- !u!114 &5429816823902312427
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -241,6 +248,8 @@ MonoBehaviour:
   _amountToMoveColliderDown: -0.4
   _collider: {fileID: 4551694876620202595}
   _groundChecker: {fileID: 3883912634979621866}
+  _animationStateController: {fileID: 2640644909906439497}
+  _characterController: {fileID: 4859186092366703069}
 --- !u!114 &1980220120415226195
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -254,6 +263,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _inputActionAsset: {fileID: -944628639613478452, guid: 8475b0f0902a8ac4b926d681abc805bf, type: 3}
+--- !u!50 &1069403978364201557
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3406932050699042284}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &4551694876620202595
 GameObject:
   m_ObjectHideFlags: 0
