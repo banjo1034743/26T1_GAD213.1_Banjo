@@ -12,6 +12,13 @@ namespace GAD213.P1.MovementSystem
 
         [SerializeField] private float _playerStandingYPosition = -0.956f; // original value was -1.092f
 
+        [SerializeField] private float _jumpingSpeed = 1f; // Used as frequency for Mathf.sin
+
+        [Tooltip("Force that is appled down on the character when jumping. Can control jumping height with this")]
+        [SerializeField] private float _downwardForce = 1f;
+
+        private Vector2 _forceDirection;
+
         private bool _adjustedPlayerYPos = false;
 
         private Coroutine _jumpingCoroutine;
@@ -24,6 +31,12 @@ namespace GAD213.P1.MovementSystem
 
         [Tooltip("Used for jumping the character")]
         [SerializeField] private Rigidbody2D _rigidBody;
+
+        [Header("Scripts")]
+
+        [SerializeField] private CharacterController _characterController;
+
+        [SerializeField] private AnimationStateController _animationStateController;
 
         #endregion
 
@@ -43,8 +56,9 @@ namespace GAD213.P1.MovementSystem
                 {
                     Debug.Log("We're adjusting the player's y pos");
 
-                    transform.Translate(0, 0.1f, 0); // Raises the player off the ground so we don't trigger the check for if we're at ground level early
-                    //_rigidBody.MovePosition(new Vector2(0, 0.1f)); 
+                    // Raises the player off the ground so we don't trigger the check for if we're at ground level early.
+                    // Using MovePosition results in a error for some reason.
+                    transform.Translate(0, 0.05f, 0); 
 
                     _adjustedPlayerYPos = true;
                 }
@@ -58,14 +72,25 @@ namespace GAD213.P1.MovementSystem
 
         private IEnumerator MovePlayerDuringJump()
         {
+            float timer = 0f;
+
+            _animationStateController.ToggleJumpVerticalState();
+
             while ((float)Math.Round(transform.position.y, 3) > (float)Math.Round(_playerStandingYPosition, 3)) // Mathf has no rounding funcitons that round to floats, so the Math class was needed here
             {
                 float x = transform.position.x;
-                float y = Mathf.Sin(Time.time);
+
+                // We don't use Time.time as that continues increasing in value outside of this jumping loop, which will result in the player
+                // starting the jump at a random point on the Y axis
+                float y = Mathf.Sin(timer * _jumpingSpeed); 
 
                 Vector2 amountToMove = new Vector2(x, y);
+                _forceDirection = new Vector2(0, _downwardForce);
 
                 _rigidBody.MovePosition(amountToMove);
+                _rigidBody.AddForce(_forceDirection, ForceMode2D.Force);
+
+                timer += Time.deltaTime;
 
                 yield return null;
             }

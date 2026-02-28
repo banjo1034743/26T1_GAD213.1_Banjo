@@ -43,7 +43,7 @@ namespace GAD213.P1.MovementSystem
         // Called every frame in Update()
         private void CallIdle()
         {
-            if (_inputManager.GetMoveValue().x <= 0 && _inputManager.GetMoveValue().y == 0)
+            if (_inputManager.GetMoveValue().x <= 0 && _inputManager.GetMoveValue().y == 0 && _jumpingController.IsJumping == false) // Dont want to switch to idle mid jump anim
             {
                 _idleController.Idle();
             }

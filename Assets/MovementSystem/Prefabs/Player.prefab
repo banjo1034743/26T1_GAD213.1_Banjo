@@ -229,8 +229,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerStandingYPosition: -0.956
+  _jumpingSpeed: 6
+  _downwardForce: 1
   _isJumping: 0
   _rigidBody: {fileID: 1069403978364201557}
+  _characterController: {fileID: 4859186092366703069}
+  _animationStateController: {fileID: 2640644909906439497}
 --- !u!114 &5429816823902312427
 MonoBehaviour:
   m_ObjectHideFlags: 0

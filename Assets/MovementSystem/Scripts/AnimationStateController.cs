@@ -14,13 +14,13 @@ namespace GAD213.P1.MovementSystem
 
         const int crouchingState = 2;
 
+        const int jumpVerticalState = 3;
+
         [Header("Components")]
 
         [SerializeField] private Animator _playerAnimator;
 
         [SerializeField] private AnimationState _walkAnimationState;
-
-        [SerializeField] private AnimationState _crouchAnimationState;
 
         #endregion
 
@@ -54,6 +54,13 @@ namespace GAD213.P1.MovementSystem
             _playerAnimator.SetFloat("playbackSpeed", 1);
 
             _playerAnimator.SetInteger("currentAnimationState", crouchingState);
+        }
+
+        public void ToggleJumpVerticalState()
+        {
+            _playerAnimator.SetFloat("playbackSpeed", 1);
+
+            _playerAnimator.SetInteger("currentAnimationState", jumpVerticalState);
         }
 
         #endregion
