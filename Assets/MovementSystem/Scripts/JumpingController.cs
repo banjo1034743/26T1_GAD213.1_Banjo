@@ -10,9 +10,18 @@ namespace GAD213.P1.MovementSystem
 
         [Header("Data")]
 
+        // These two const vars are used in the coroutine to do different functionality based on if
+        // we're trying to jump horizontally or vertcally
+
+        const int _jumpingVertically = 0;
+
+        const int _jumpingHorizically = 1;
+
         [SerializeField] private float _playerStandingYPosition = -0.956f; // original value was -1.092f
 
-        [SerializeField] private float _jumpingSpeed = 1f; // Used as frequency for Mathf.sin
+        [SerializeField] private float _verticalJumpingSpeed = 1f; // Used as frequency for Mathf.sin
+
+        [SerializeField] private float _horizontalJumpingSpeed = 0.5f; // Used as frequency for Mathf.cos
 
         [Tooltip("Force that is appled down on the character when jumping. Can control jumping height with this")]
         [SerializeField] private float _downwardForce = 1f;
@@ -42,9 +51,9 @@ namespace GAD213.P1.MovementSystem
 
         #region Methods
 
-        public void Jump()
+        public void VerticalJump()
         {
-            Debug.Log("Jump called");
+            Debug.Log("Verical Jump called");
             Debug.Log("Our Y pos is: " + transform.position.y);
             Debug.Log("The position we want the player to stay at is: " + _playerStandingYPosition);
 
@@ -65,24 +74,71 @@ namespace GAD213.P1.MovementSystem
 
                 if (_jumpingCoroutine == null)
                 {
-                    _jumpingCoroutine = StartCoroutine(MovePlayerDuringJump());       
+                    _jumpingCoroutine = StartCoroutine(MovePlayerDuringJump(_jumpingVertically, 0));       
                 }
             }
         }
 
-        private IEnumerator MovePlayerDuringJump()
+        public void HorizontalJump(float horizontalInput)
+        {
+            Debug.Log("Horizontal Jump called");
+            Debug.Log("Our Y pos is: " + transform.position.y);
+            Debug.Log("The position we want the player to stay at is: " + _playerStandingYPosition);
+
+            if (_isJumping)
+            {
+                Debug.Log("We're jumping");
+
+                if (!_adjustedPlayerYPos)
+                {
+                    Debug.Log("We're adjusting the player's y pos");
+
+                    // Raises the player off the ground so we don't trigger the check for if we're at ground level early.
+                    // Using MovePosition results in a error for some reason.
+                    transform.Translate(0, 0.05f, 0);
+
+                    _adjustedPlayerYPos = true;
+                }
+
+                if (_jumpingCoroutine == null)
+                {
+                    _jumpingCoroutine = StartCoroutine(MovePlayerDuringJump(_jumpingHorizically, horizontalInput));
+                }
+            }
+        }
+
+        private IEnumerator MovePlayerDuringJump(int jumpType, float amountToJumpHorizontally)
         {
             float timer = 0f;
 
-            _animationStateController.ToggleJumpVerticalState();
+            switch (jumpType)
+            {
+                case 0:
+                    _animationStateController.ToggleJumpVerticalState();
+                    break;
+                case 1:
+                    // Play horizontal jump animation
+                    break;
+            }
 
             while ((float)Math.Round(transform.position.y, 3) > (float)Math.Round(_playerStandingYPosition, 3)) // Mathf has no rounding funcitons that round to floats, so the Math class was needed here
             {
-                float x = transform.position.x;
+                float x = 0;
+                float y = 0;
 
-                // We don't use Time.time as that continues increasing in value outside of this jumping loop, which will result in the player
-                // starting the jump at a random point on the Y axis
-                float y = Mathf.Sin(timer * _jumpingSpeed); 
+                switch (jumpType)
+                {
+                    case 0:
+                        x = transform.position.x;
+                        // We don't use Time.time as that continues increasing in value outside of this jumping loop, which will result in the player
+                        // starting the jump at a random point on the Y axis
+                        y = Mathf.Sin(timer * _verticalJumpingSpeed);
+                        break;
+                    case 1:
+                        x = Mathf.Cos(timer * _horizontalJumpingSpeed) * amountToJumpHorizontally * 2;
+                        y = Mathf.Sin(timer * (_verticalJumpingSpeed / 2));
+                        break;
+                }
 
                 Vector2 amountToMove = new Vector2(x, y);
                 _forceDirection = new Vector2(0, _downwardForce);

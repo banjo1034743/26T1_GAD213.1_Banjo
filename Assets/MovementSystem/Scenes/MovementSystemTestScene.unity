@@ -119,17 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!114 &165379752 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2640644909906439497, guid: 34c24c0a77936aa408bbe32570ecf70c, type: 3}
-  m_PrefabInstance: {fileID: 8892129786940493200}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f27ed2031c4c1543ba4edb23be58004, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -356,17 +345,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 9038023654447525392, guid: 34c24c0a77936aa408bbe32570ecf70c, type: 3}
   m_PrefabInstance: {fileID: 8892129786940493200}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &762793717 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4859186092366703069, guid: 34c24c0a77936aa408bbe32570ecf70c, type: 3}
-  m_PrefabInstance: {fileID: 8892129786940493200}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 740d637f275df764b8f771fc2452b71e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &840051431
 GameObject:
   m_ObjectHideFlags: 0
@@ -700,21 +678,13 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 4655167445258384860, guid: 34c24c0a77936aa408bbe32570ecf70c, type: 3}
-      propertyPath: _jumpingSpeed
+      propertyPath: _verticalJumpingSpeed
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4655167445258384860, guid: 34c24c0a77936aa408bbe32570ecf70c, type: 3}
-      propertyPath: _jumpingHeight
-      value: 1
+      propertyPath: _horizontalJumpingSpeed
+      value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 4655167445258384860, guid: 34c24c0a77936aa408bbe32570ecf70c, type: 3}
-      propertyPath: _characterController
-      value: 
-      objectReference: {fileID: 762793717}
-    - target: {fileID: 4655167445258384860, guid: 34c24c0a77936aa408bbe32570ecf70c, type: 3}
-      propertyPath: _animationStateController
-      value: 
-      objectReference: {fileID: 165379752}
     - target: {fileID: 9038023654447525392, guid: 34c24c0a77936aa408bbe32570ecf70c, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.85

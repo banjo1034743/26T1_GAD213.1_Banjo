@@ -229,7 +229,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerStandingYPosition: -0.956
-  _jumpingSpeed: 6
+  _verticalJumpingSpeed: 6
+  _horizontalJumpingSpeed: 2
   _downwardForce: 1
   _isJumping: 0
   _rigidBody: {fileID: 1069403978364201557}

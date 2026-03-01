@@ -54,7 +54,7 @@ namespace GAD213.P1.MovementSystem
         {
             if (_crouchController.IsCrouching == false && _jumpingController.IsJumping == false)
             {
-                //Debug.Log(_inputManager.GetMoveValue());
+                Debug.Log(_inputManager.GetMoveValue());
 
                 // If the player is moving the analog stick to the left or right without angling it upward, move
 
@@ -68,13 +68,22 @@ namespace GAD213.P1.MovementSystem
         // Called every frame in Update()
         private void CallJump()
         {
-            // If the left analog stick is flicked up and not angled in the left or right too much, call jump
-            if (_inputManager.GetMoveValue().y > 0.9f && _inputManager.GetMoveValue().x < _analogStickXValueAllowance || _inputManager.GetMoveValue().y > 0.9f && _inputManager.GetMoveValue().x > -_analogStickXValueAllowance)
+            // If the left analog stick is flicked up and not angled in the left or right too much, call vertical jump
+            if (HasDoneVerticalJumpInput() == true)
             {
                 if (_jumpingController.IsJumping == false)
                 {
                     _jumpingController.IsJumping = true;
-                    _jumpingController.Jump();
+                    _jumpingController.VerticalJump();
+                }
+            }
+            // if we have flicked the analog stick to the upper right or left corners, call horizontal jump
+            else if (HasDoneHorizontalJumpInput() == true)
+            {
+                if (_jumpingController.IsJumping == false)
+                {
+                    _jumpingController.IsJumping = true;
+                    _jumpingController.HorizontalJump(_inputManager.GetMoveValue().x);
                 }
             }
         }
@@ -94,6 +103,37 @@ namespace GAD213.P1.MovementSystem
                 {
                     _crouchController.Uncrouch();
                 }
+            }
+        }
+
+        private bool HasDoneVerticalJumpInput()
+        {
+            if (_inputManager.GetMoveValue().y > 0.9f && _inputManager.GetMoveValue().x < _analogStickXValueAllowance || _inputManager.GetMoveValue().y > 0.9f && _inputManager.GetMoveValue().x > -_analogStickXValueAllowance)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private bool HasDoneHorizontalJumpInput()
+        {
+            // If the input stick is flicked diagonally in the upper right corner, we have inputted the command to jump forward
+            if (_inputManager.GetMoveValue().x >= 0.7f && _inputManager.GetMoveValue().x <= 0.9f && _inputManager.GetMoveValue().y >= 0.5f && _inputManager.GetMoveValue().y <= 0.7f)
+            {
+                return true;
+            }
+            // If the input stick is flicked diagonally in the upper left corner, we have inputted the command to jump backward
+            else if (_inputManager.GetMoveValue().x >= -0.9f && _inputManager.GetMoveValue().x <= -0.7f && _inputManager.GetMoveValue().y >= 0.4f && _inputManager.GetMoveValue().x <= 0.6f)
+            {
+                return true;
+            }
+            // Otherwise, we have not inputted any jumping command
+            else
+            {
+                return false;
             }
         }
 
