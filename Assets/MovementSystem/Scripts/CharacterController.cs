@@ -14,6 +14,10 @@ namespace GAD213.P1.MovementSystem
 
         [SerializeField] private JumpingController _jumpingController;
 
+        const int _jumpingVertically = 0;
+
+        const int _jumpingHorizontally = 1;
+
         [SerializeField] private CrouchController _crouchController;
 
         [Header("Parameters")]
@@ -73,8 +77,7 @@ namespace GAD213.P1.MovementSystem
             {
                 if (_jumpingController.IsJumping == false)
                 {
-                    _jumpingController.IsJumping = true;
-                    _jumpingController.VerticalJump();
+                    _jumpingController.Jump(_jumpingVertically, 0f);
                 }
             }
             // if we have flicked the analog stick to the upper right or left corners, call horizontal jump
@@ -82,8 +85,7 @@ namespace GAD213.P1.MovementSystem
             {
                 if (_jumpingController.IsJumping == false)
                 {
-                    _jumpingController.IsJumping = true;
-                    _jumpingController.HorizontalJump(_inputManager.GetMoveValue().x);
+                    _jumpingController.Jump(_jumpingHorizontally, _inputManager.GetMoveValue().x);
                 }
             }
         }

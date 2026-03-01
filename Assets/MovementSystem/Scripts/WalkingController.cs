@@ -42,12 +42,6 @@ namespace GAD213.P1.MovementSystem
             }
         }
 
-        // Called in Start()
-        private void InitializeVariables()
-        {
-            _rigidBody = _playerColliderObject.GetComponent<Rigidbody2D>();
-        }
-
         #endregion
 
         #region Unity Methods
@@ -55,7 +49,7 @@ namespace GAD213.P1.MovementSystem
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
-            InitializeVariables();
+
         }
 
         #endregion

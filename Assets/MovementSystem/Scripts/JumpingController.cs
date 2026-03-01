@@ -10,27 +10,11 @@ namespace GAD213.P1.MovementSystem
 
         [Header("Data")]
 
-        // These two const vars are used in the coroutine to do different functionality based on if
-        // we're trying to jump horizontally or vertcally
+        [SerializeField] private float _gravityScale;
 
-        const int _jumpingVertically = 0;
+        [SerializeField] private float _jumpHeight;
 
-        const int _jumpingHorizically = 1;
-
-        [SerializeField] private float _playerStandingYPosition = -0.956f; // original value was -1.092f
-
-        [SerializeField] private float _verticalJumpingSpeed = 1f; // Used as frequency for Mathf.sin
-
-        [SerializeField] private float _horizontalJumpingSpeed = 0.5f; // Used as frequency for Mathf.cos
-
-        [Tooltip("Force that is appled down on the character when jumping. Can control jumping height with this")]
-        [SerializeField] private float _downwardForce = 1f;
-
-        private Vector2 _forceDirection;
-
-        private bool _adjustedPlayerYPos = false;
-
-        private Coroutine _jumpingCoroutine;
+        [SerializeField] private float _horizontalJumpPower = 1;
 
         public bool IsJumping { get { return _isJumping; } set { _isJumping = value; } }
 
@@ -47,133 +31,55 @@ namespace GAD213.P1.MovementSystem
 
         [SerializeField] private AnimationStateController _animationStateController;
 
+        [SerializeField] private GroundChecker _groundChecker;
+
         #endregion
 
         #region Methods
 
-        public void VerticalJump()
+        public void Jump(int jumpType, float horizontalInput)
         {
-            Debug.Log("Verical Jump called");
-            Debug.Log("Our Y pos is: " + transform.position.y);
-            Debug.Log("The position we want the player to stay at is: " + _playerStandingYPosition);
+            // CODE SOURCE: (Game Dev Beginner, 2022, 6:26)
+            _rigidBody.gravityScale = _gravityScale;
+            float verticalJumpForce = Mathf.Sqrt(_jumpHeight * (Physics2D.gravity.y * _rigidBody.gravityScale) * -2) * _rigidBody.mass;
+            _rigidBody.AddForce(Vector2.up * verticalJumpForce, ForceMode2D.Impulse);
 
-            if (_isJumping)
-            {
-                Debug.Log("We're jumping");
-
-                if (!_adjustedPlayerYPos)
-                {
-                    Debug.Log("We're adjusting the player's y pos");
-
-                    // Raises the player off the ground so we don't trigger the check for if we're at ground level early.
-                    // Using MovePosition results in a error for some reason.
-                    transform.Translate(0, 0.05f, 0); 
-
-                    _adjustedPlayerYPos = true;
-                }
-
-                if (_jumpingCoroutine == null)
-                {
-                    _jumpingCoroutine = StartCoroutine(MovePlayerDuringJump(_jumpingVertically, 0));       
-                }
-            }
-        }
-
-        public void HorizontalJump(float horizontalInput)
-        {
-            Debug.Log("Horizontal Jump called");
-            Debug.Log("Our Y pos is: " + transform.position.y);
-            Debug.Log("The position we want the player to stay at is: " + _playerStandingYPosition);
-
-            if (_isJumping)
-            {
-                Debug.Log("We're jumping");
-
-                if (!_adjustedPlayerYPos)
-                {
-                    Debug.Log("We're adjusting the player's y pos");
-
-                    // Raises the player off the ground so we don't trigger the check for if we're at ground level early.
-                    // Using MovePosition results in a error for some reason.
-                    transform.Translate(0, 0.05f, 0);
-
-                    _adjustedPlayerYPos = true;
-                }
-
-                if (_jumpingCoroutine == null)
-                {
-                    _jumpingCoroutine = StartCoroutine(MovePlayerDuringJump(_jumpingHorizically, horizontalInput));
-                }
-            }
-        }
-
-        private IEnumerator MovePlayerDuringJump(int jumpType, float amountToJumpHorizontally)
-        {
-            float timer = 0f;
-
+            // Depending on the jump, we'll play a different animation
             switch (jumpType)
             {
                 case 0:
                     _animationStateController.ToggleJumpVerticalState();
                     break;
                 case 1:
-                    // Play horizontal jump animation
+                    _animationStateController.ToggleJumpHorizontalState();
+                    _rigidBody.AddForce(new Vector2(horizontalInput * _horizontalJumpPower, 0), ForceMode2D.Force);
                     break;
             }
 
-            while ((float)Math.Round(transform.position.y, 3) > (float)Math.Round(_playerStandingYPosition, 3)) // Mathf has no rounding funcitons that round to floats, so the Math class was needed here
+            _isJumping = true;
+        }
+
+        private void CheckIfLandedJump()
+        {
+            // When we're jumping, we'll begin checking if we've landed
+            if (_isJumping)
             {
-                float x = 0;
-                float y = 0;
-
-                switch (jumpType)
+                if (_groundChecker.IsOnGround())
                 {
-                    case 0:
-                        x = transform.position.x;
-                        // We don't use Time.time as that continues increasing in value outside of this jumping loop, which will result in the player
-                        // starting the jump at a random point on the Y axis
-                        y = Mathf.Sin(timer * _verticalJumpingSpeed);
-                        break;
-                    case 1:
-                        x = Mathf.Cos(timer * _horizontalJumpingSpeed) * amountToJumpHorizontally * 2;
-                        y = Mathf.Sin(timer * (_verticalJumpingSpeed / 2));
-                        break;
+                    _isJumping = false;
+                    _animationStateController.ToggleIdleState();
                 }
-
-                Vector2 amountToMove = new Vector2(x, y);
-                _forceDirection = new Vector2(0, _downwardForce);
-
-                _rigidBody.MovePosition(amountToMove);
-                _rigidBody.AddForce(_forceDirection, ForceMode2D.Force);
-
-                timer += Time.deltaTime;
-
-                yield return null;
             }
-
-            Debug.Log("We're stopping the jump code");
-
-            _isJumping = false;
-            _adjustedPlayerYPos = false;
-
-            StopCoroutine(_jumpingCoroutine);
-            _jumpingCoroutine = null;
         }
 
         #endregion
 
         #region Unity Methods
 
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Start()
-        {
-
-        }
-
         // Update is called once per frame
         void Update()
         {
-
+            CheckIfLandedJump();
         }
 
         #endregion

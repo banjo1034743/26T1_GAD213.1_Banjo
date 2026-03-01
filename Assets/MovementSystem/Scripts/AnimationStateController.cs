@@ -16,6 +16,8 @@ namespace GAD213.P1.MovementSystem
 
         const int jumpVerticalState = 3;
 
+        const int jumpHorizontalState = 4;
+
         [Header("Components")]
 
         [SerializeField] private Animator _playerAnimator;
@@ -61,6 +63,13 @@ namespace GAD213.P1.MovementSystem
             _playerAnimator.SetFloat("playbackSpeed", 1);
 
             _playerAnimator.SetInteger("currentAnimationState", jumpVerticalState);
+        }
+
+        public void ToggleJumpHorizontalState()
+        {
+            _playerAnimator.SetFloat("playbackSpeed", 1);
+
+            _playerAnimator.SetInteger("currentAnimationState", jumpHorizontalState);
         }
 
         #endregion
